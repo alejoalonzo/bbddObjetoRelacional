@@ -1,0 +1,7 @@
+"id","nombre","apellidos","calle","cp","poblacion","nacimiento","sexo","sueldo","foto"
+"1","Juan","López","Cea Bermudez, 45","28012","Madrid","1980-01-12","hombre","1400",
+"2","Marta","Pérez","Álamos, 69","08002","Barcelona","1985-05-22","mujer","1800",
+"3","Cristina","García","Delicias, 17","28076","Madrid","1992-07-04","mujer","1000","http://placeimg.com/640/480/people"
+"4","María Jesús","Muñoz","Gutenberg, 16","28007","Madrid","1968-01-28","mujer","1200",
+"10","Alfredo","Hurtado","Villaverde, 56","28034","Madrid","1969-11-25","hombre","1500",
+"15","Botones","Sacarino","Rue del percebe, 13","04678","Bilbao","1969-11-25","hombre","1100",
