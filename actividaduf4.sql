@@ -109,158 +109,58 @@ END;
 Siguiendo con la bbdd de Universidad, en el objeto “Docente” cree un método que calcule una bonificación de 20€ por año para los docentes 
 de categoria A y de 15€ por año para los de otras categorias*/
 
-CREATE OR REPLACE TYPE docente UNDER persona (
-    titulacion VARCHAR2(12),
-    antiguedad NUMBER(2,0),
-    categoria VARCHAR2(1),
-    CONSTRUCTOR FUNCTION docente (
-        dni VARCHAR2,
-        nombre VARCHAR2,
-        titulacion VARCHAR2,
-        antiguedad NUMBER
-    ) RETURN SELF AS RESULT, /* Devuelve el mismo objeto como resultado */
-    MEMBER FUNCTION bonificacion RETURN NUMBER
-);
-
-
-CREATE OR REPLACE TYPE BODY docente AS  
-        CONSTRUCTOR FUNCTION docente (
-        dni VARCHAR2,
-        nombre VARCHAR2,
-        titulacion VARCHAR2,
-        antiguedad NUMBER
-    ) RETURN SELF AS RESULT
-    IS
-    BEGIN
-        SELF.dni  := dni ;
-        SELF.nombre := nombre ;
-        SELF.titulacion := titulacion ;
-        SELF.antiguedad := antiguedad ;
-        
-        IF (titulacion = 'doctor') THEN
-            SELF.categoria := 'A';
-        ELSE
-            SELF.categoria := 'B';
-        END IF;
-        
-        RETURN;
-    END;
-
-
-    MEMBER FUNCTION bonificacion RETURN NUMBER
-    IS
-        bonificacion NUMBER(4); 
-    BEGIN
-        IF (categoria = 'A') THEN
-            bonificacion := (SELF.antiguedad)*'20' ;
-        ELSE
-            bonificacion := ((SELF.antiguedad)*'15' ;
-        END IF;
-        
-        RETURN bonificacion;
-    END;
-END;
 
 
 /**/
+
 CREATE OR REPLACE TYPE docente UNDER persona (
 
     titulacion VARCHAR2(12),
-
     antiguedad NUMBER(2,0),
-
     categoria VARCHAR2(1),
 
     CONSTRUCTOR FUNCTION docente (
-
         dni VARCHAR2,
-
         nombre VARCHAR2,
-
         titulacion VARCHAR2,
-
         antiguedad NUMBER
-
     ) RETURN SELF AS RESULT, /* Devuelve el mismo objeto como resultado */
-
     MEMBER FUNCTION bonificacion RETURN NUMBER
-
 );
-
- 
 
 CREATE OR REPLACE TYPE BODY docente AS  
 
         CONSTRUCTOR FUNCTION docente (
-
         dni VARCHAR2,
-
         nombre VARCHAR2,
-
         titulacion VARCHAR2,
-
         antiguedad NUMBER
-
     ) RETURN SELF AS RESULT
-
     IS
-
     BEGIN
-
         SELF.dni  := dni ;
-
         SELF.nombre := nombre ;
-
         SELF.titulacion := titulacion ;
-
         SELF.antiguedad := antiguedad ;
-
-       
-
         IF (titulacion = 'doctor') THEN
-
             SELF.categoria := 'A';
-
         ELSE
-
             SELF.categoria := 'B';
-
         END IF;
-
-       
-
         RETURN;
-
     END;
-
-
-
- 
 
     MEMBER FUNCTION bonificacion RETURN NUMBER
-
     IS
-
         bonificacion NUMBER(4);
-
     BEGIN
-
         IF (categoria = 'A') THEN
-
             bonificacion := (SELF.antiguedad)*'20' ;
-
         ELSE
-
             bonificacion := (SELF.antiguedad)*'15' ;
-
         END IF;
-
-       
-
         RETURN bonificacion;
-
-    END;
-
+    END bonificacion;
 END;
 
 
@@ -268,17 +168,37 @@ END;
 /*PREGUNTA 7-----------------------------------------------------------------------------------------------------
 Siguiendo con la bbdd de Universidad, cree una tabla “profesores” para almacenar instancias de “Docente”.*/
 
+CREATE TABLE tabla_profesores OF docente;
 
 /*PREGUNTA 8---------------------------------------------------------------------------------------------------------
 Siguiendo con la bbdd de Universidad, en la tabla "profesores":
 - Inserte 2 profesores utilizando el constructor por defecto.
-- Inserte 2 profesores utilizando el 2º constructor.
 */
+INSERT INTO tabla_profesores VALUES (
+		docente('12345678M', 'Bruno Mars', 'doctor', '5', 'A') 
+	);
+INSERT INTO tabla_profesores VALUES (
+		docente('12345678A', 'Michael Jordan', 'licenciado', '6', 'B') 
+	);
+
+/*- Inserte 2 profesores utilizando el 2º constructor.*/
+INSERT INTO tabla_profesores VALUES (
+		docente('12345678P', 'Pedro Palotes', 'doctor', '3') 
+	);
+INSERT INTO tabla_profesores VALUES (
+		docente('12345678J', 'Sergio Sol', 'licenciado', '4') 
+	);
 
 
 /*PREGUNTA 9--------------------------------------------------------------------------------------------------------------------
 Siguiendo con la bbdd de Universidad, haga una consulta que muestre los profesores ordenados por categorias.*/
-
+SELECT
+    *
+FROM tabla_profesores
+ORDER BY categoria;
 
 /*PREGUNTA 10-------------------------------------------------------------------------------------------------------------------
 Siguiendo con la bbdd de Universidad, haga una consulta que muestre los profesores con sus bonificaciones*/
+SELECT
+t.nombre, t.bonificacion()
+FROM tabla_profesores t;
